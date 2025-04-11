@@ -1,0 +1,15 @@
+.card-text{
+    color: green;
+    font-weight: 800;
+
+}
+
+.card-title{
+    font-weight: 900;
+}
+
+.card-img-top {
+    height: 200px; /* or whatever suits your layout */
+    width: 100%;
+    object-fit: cover;
+}

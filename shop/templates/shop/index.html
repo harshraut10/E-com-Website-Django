@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap 4.6 CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="{% static 'shop/style.css'%}">
+
+
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                  
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                          <a id="cart" class="nav-link" href="#">Cart(0)</a>
+                        </li>
+                        
+                      </ul>
+                      <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                      </form>
+                    </div>
+                  </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <form class="card card-sm">
+                    <div class="card-body row no-gytters align-items-center">
+                        <div class="col">
+                            <input type="search" name="item_name" placeholder="Search for products" class="form-control form-control-borderless">
+                        </div>
+
+                        <div class="col-auto">
+                            <button class="btn btn-success" type="submit"> Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            {%for product in product_objects %}
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="{{product.image}}" class="card-img-top">
+                    <div class="card-body">
+                        <div class="card-title">
+                           
+                             {{product.title}}
+
+                        </div>
+                        <div class="card-text">
+                            {{product.price}}
+
+                        </div>
+                        <a href="/{{product.id}}" class="btn  btn-warning">View</a>
+                        <button id="{{product.id}}" class="btn atc btn-warning">Add to cart</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-md-3 offset-md-4">
+                <ul class="pagination">
+                    {% if product_objects.has_previous%}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{product_objects.previous_page_number}}">Previous</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{product_objects.number}}">Current</a>
+                    </li>
+
+                    {% if product_objects.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{product_objects.next_page_number}}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    console.log('This is working');
+
+    if(localStorage.getItem('cart')==null){
+        var cart={};
+    }
+    else {
+        cart =JSON.parse(localStorage.getItem('cart'));
+
+    }
+    $(document).on('click','.atc',function(){
+        console.log("The add to cart button is clicked");
+        var item_id= this.id.toString();
+        console.log(item_id);
+
+        if(cart[item_id]!= undefined){
+            cart[item_id]=cart[item_id]+1;
+        }
+        else{
+            cart[item_id]=1;
+
+        }
+        console.log(cart);
+        localStorage.setItem('cart',JSON.stringify(cart));
+        document.getElementById("cart").innerHTML="Cart(" + Object.keys(cart).length +")";
+    });
+
+</script>
+</html>
+
+
+
+
+
